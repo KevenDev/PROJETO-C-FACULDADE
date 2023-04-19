@@ -8,3 +8,5 @@ typedef struct{
 	float nota3;
 	int faltas;
 } aluno;
+
+//TESTE COMMIT MAIN
