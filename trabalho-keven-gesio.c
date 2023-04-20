@@ -53,10 +53,23 @@ typedef struct{
 
 }*/
 
+int verificaMatricula(Aluno *alunos, int matricula){
+	for(int i = 0; i < 3; i++){
+		if(alunos[i].matricula == matricula){
+			return 1;
+		}
+	}
+	return 0;
+}
+
 void cadastrarAlunos(Aluno *alunos){
 	for (int i = 0; i < 3; i++) {
+		int matricula = 0;
         printf("\nDigite a matricula do %d aluno: ", i+1);
-        scanf("%d", &alunos[i].matricula);
+        scanf("%d", &matricula);
+        if(verificaMatricula(alunos, matricula) == 0){
+        
+        alunos[i].matricula = matricula;
         
         printf("\nDigite a primeira nota do %d aluno: ", i+1);
         scanf("%f", &alunos[i].nota1);
@@ -69,6 +82,10 @@ void cadastrarAlunos(Aluno *alunos){
         
         printf("\nDigite quantidade de faltas do %d aluno: ", i+1);
         scanf("%d", &alunos[i].faltas);
+		}else{
+			printf("Essa matricula ja existe, por favor insira novamente");
+			i--;
+		}
         
     }
 }
