@@ -63,10 +63,14 @@ int verificaMatricula(Aluno *alunos, int matricula){
 }
 
 void cadastrarAlunos(Aluno *alunos){
+	
 	for (int i = 0; i < 3; i++) {
+		
 		int matricula = 0;
+		
         printf("\nDigite a matricula do %d aluno: ", i+1);
         scanf("%d", &matricula);
+        
         if(verificaMatricula(alunos, matricula) == 0){
         
         alunos[i].matricula = matricula;
@@ -80,8 +84,20 @@ void cadastrarAlunos(Aluno *alunos){
         printf("\nDigite a terceira nota do %d aluno: ", i+1);
         scanf("%f", &alunos[i].nota3);
         
-        printf("\nDigite quantidade de faltas do %d aluno: ", i+1);
-        scanf("%d", &alunos[i].faltas);
+        int faltas;
+		
+		//FUTURAMENTE TENTAR TRANSFORMAR ESSA LÓGICA EM UMA FUNÇÃO
+        do{
+        	printf("\nDigite quantidade de faltas do %d aluno: ", i+1);
+        	scanf("%d", &faltas);
+        	
+        	if(faltas <= 45){
+        	alunos[i].faltas = faltas;
+			}else{
+				printf("Por favor inserir a quantidade de faltas menor ou igual a 45");
+			}
+        
+		}while(faltas > 45);
 		}else{
 			printf("Essa matricula ja existe, por favor insira novamente");
 			i--;
@@ -159,7 +175,7 @@ void optionMenu(int op, Aluno *turma, int *ptrPosicaoAtual){
 
 
 int main(){
-	int op = -1, *ptrPosicaoAtual;
+	int op = -1, *ptrPosicaoAtual, quantidadeAulas = 45;
 	Aluno turma[3];
 	int posicaoAtual = 0;
 	*ptrPosicaoAtual = &posicaoAtual;
