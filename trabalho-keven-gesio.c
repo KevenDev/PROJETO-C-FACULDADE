@@ -9,36 +9,107 @@ typedef struct{
 	int faltas;
 } Aluno;
 
-Aluno turma[3];
 
-void cadastrarAluno(Aluno *turma){
+/*void cadastrarAluno(Aluno *alunos, int *ptrPosicaoAtual){
+	
+	/*int posicaoVazia = -1;
+	
+	for(int i = 0; i < 3; i++){
+		if(verificaValorVazio(turma) == 0){
+			posicaoVazia = i;
+			break;
+		}
+	}
+	
+    //for(int i = 0;  i < 1; i++){
+		
+	if(*ptrPosicaoAtual == 3){
+		printf("Numero maximo de alunos atingido");
+	}else{
+		Aluno aluno;
+		
+    	printf("\nInsira a matricula do Aluno: ");
+    	scanf("%d", &aluno.matricula);
 
-    for(int i = 0;  i < 1; i++){
+    	printf("\nInsira a primeira nota do Aluno: ");
+    	scanf("%f", &aluno.nota1);
 
-    printf("\nInsira a matricula do Aluno: ");
-    scanf("%d", &turma[i].matricula);
+    	printf("\nInsira a segunda nota do Aluno: ");
+    	scanf("%f", &aluno.nota2);
 
-    printf("\nInsira a primeira nota do Aluno: ");
-    scanf("%f", &turma[i].nota1);
+    	printf("\nInsira a terceira nota do Aluno: ");
+    	scanf("%f", &aluno.nota3);
 
-    printf("\nInsira a segunda nota do Aluno: ");
-    scanf("%f", &turma[i].nota2);
-
-    printf("\nInsira a terceira nota do Aluno: ");
-    scanf("%f", &turma[i].nota3);
-
-    printf("\nInsira a quantidade de faltas do Aluno: ");
-    scanf("%d", &turma[i].faltas);
-    }
+    	printf("\nInsira a quantidade de faltas do Aluno: ");
+    	scanf("%d", &aluno.faltas);
+    	
+    	alunos[*ptrPosicaoAtual] = aluno;
+		*ptrPosicaoAtual++;
+	}
+	
+    //}
     
     printf("Aluno cadastrado.\n");
 
+}*/
+
+int verificaMatricula(Aluno *alunos, int matricula){
+	for(int i = 0; i < 3; i++){
+		if(alunos[i].matricula == matricula){
+			return 1;
+		}
+	}
+	return 0;
+}
+
+void cadastrarAlunos(Aluno *alunos){
+	
+	for (int i = 0; i < 3; i++) {
+		
+		int matricula = 0;
+		
+        printf("\nDigite a matricula do %d aluno: ", i+1);
+        scanf("%d", &matricula);
+        
+        if(verificaMatricula(alunos, matricula) == 0){
+        
+        alunos[i].matricula = matricula;
+        
+        printf("\nDigite a primeira nota do %d aluno: ", i+1);
+        scanf("%f", &alunos[i].nota1);
+        
+        printf("\nDigite a segunda nota do %d aluno: ", i+1);
+        scanf("%f", &alunos[i].nota2);
+        
+        printf("\nDigite a terceira nota do %d aluno: ", i+1);
+        scanf("%f", &alunos[i].nota3);
+        
+        int faltas;
+		
+		//FUTURAMENTE TENTAR TRANSFORMAR ESSA LÓGICA EM UMA FUNÇÃO
+        do{
+        	printf("\nDigite quantidade de faltas do %d aluno: ", i+1);
+        	scanf("%d", &faltas);
+        	
+        	if(faltas <= 45){
+        	alunos[i].faltas = faltas;
+			}else{
+				printf("Por favor inserir a quantidade de faltas menor ou igual a 45");
+			}
+        
+		}while(faltas > 45);
+		}else{
+			printf("Essa matricula ja existe, por favor insira novamente");
+			i--;
+		}
+        
+    }
 }
 
 void listarAlunos(Aluno *turma){	
 	printf("Lista de alunos cadastrados:\n");
 	
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 3; i++) {
         printf("Matricula: %d\n", turma[i].matricula);
         printf("Nota 1: %.1f\n", turma[i].nota1);
         printf("Nota 2: %.1f\n", turma[i].nota2);
@@ -47,11 +118,19 @@ void listarAlunos(Aluno *turma){
     }
 }
     
-    
+ 
+ int verificaValorVazio(Aluno *turma){
+ 	for(int i = 0; i < 3; i++){
+ 		if(turma[i].matricula == 0){
+ 			return 0;
+		 }
+	 }
+	 return -1;
+ }   
 
 
 
-void optionMenu(int op){
+void optionMenu(int op, Aluno *turma, int *ptrPosicaoAtual){
 	
 	do{
 		printf("Cadastro dos Alunos:\n");
@@ -67,7 +146,7 @@ void optionMenu(int op){
 		scanf("%d", &op);
 		
 		if(op == 1){
-			cadastrarAluno(turma);
+			cadastrarAlunos(turma);
 		}	
 	    else if(op == 2){
 			printf("\nAlterar aluno");
@@ -96,9 +175,17 @@ void optionMenu(int op){
 
 
 int main(){
-	int op;
+	int op = -1, *ptrPosicaoAtual, quantidadeAulas = 45;
 	Aluno turma[3];
-	optionMenu(&op);
+	int posicaoAtual = 0;
+	*ptrPosicaoAtual = &posicaoAtual;
+	
+	/*for (int i = 0; i < 3; i++) {
+        turma[i].matricula, 0;
+        turma[i].nota1, 0,0;
+    }*/
+	
+	optionMenu(op, turma, &posicaoAtual);
 }
 
 
