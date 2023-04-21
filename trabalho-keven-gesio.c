@@ -1,137 +1,30 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef struct{
 	int matricula;
-	float nota1;
-	float nota2;
-	float nota3;
+	float notas[3];
 	int faltas;
 } Aluno;
 
+int num_alunos = 0;
 
-/*void cadastrarAluno(Aluno *alunos, int *ptrPosicaoAtual){
-	
-	/*int posicaoVazia = -1;
-	
-	for(int i = 0; i < 3; i++){
-		if(verificaValorVazio(turma) == 0){
-			posicaoVazia = i;
-			break;
-		}
-	}
-	
-    //for(int i = 0;  i < 1; i++){
-		
-	if(*ptrPosicaoAtual == 3){
-		printf("Numero maximo de alunos atingido");
-	}else{
-		Aluno aluno;
-		
-    	printf("\nInsira a matricula do Aluno: ");
-    	scanf("%d", &aluno.matricula);
+void menu(Aluno *alunos);
+void cadastrar(Aluno *alunos);
+void alterarDados(Aluno *alunos);
+void listarAlunos(Aluno *alunos);
+void aprovados();
+void reprovadosMedia();
+void reprovadosFalta();
 
-    	printf("\nInsira a primeira nota do Aluno: ");
-    	scanf("%f", &aluno.nota1);
-
-    	printf("\nInsira a segunda nota do Aluno: ");
-    	scanf("%f", &aluno.nota2);
-
-    	printf("\nInsira a terceira nota do Aluno: ");
-    	scanf("%f", &aluno.nota3);
-
-    	printf("\nInsira a quantidade de faltas do Aluno: ");
-    	scanf("%d", &aluno.faltas);
-    	
-    	alunos[*ptrPosicaoAtual] = aluno;
-		*ptrPosicaoAtual++;
-	}
-	
-    //}
-    
-    printf("Aluno cadastrado.\n");
-
-}*/
-
-int verificaMatricula(Aluno *alunos, int matricula){
-	for(int i = 0; i < 3; i++){
-		if(alunos[i].matricula == matricula){
-			return 1;
-		}
-	}
-	return 0;
+int main(){
+	Aluno alunos[50];
+	menu(alunos);
 }
 
-void cadastrarAlunos(Aluno *alunos){
+void menu(Aluno *alunos){
 	
-	for (int i = 0; i < 3; i++) {
-		
-		int matricula = 0;
-		
-        printf("\nDigite a matricula do %d aluno: ", i+1);
-        scanf("%d", &matricula);
-        
-        if(verificaMatricula(alunos, matricula) == 0){
-        
-        alunos[i].matricula = matricula;
-        
-        printf("\nDigite a primeira nota do %d aluno: ", i+1);
-        scanf("%f", &alunos[i].nota1);
-        
-        printf("\nDigite a segunda nota do %d aluno: ", i+1);
-        scanf("%f", &alunos[i].nota2);
-        
-        printf("\nDigite a terceira nota do %d aluno: ", i+1);
-        scanf("%f", &alunos[i].nota3);
-        
-        int faltas;
-		
-		//FUTURAMENTE TENTAR TRANSFORMAR ESSA LÓGICA EM UMA FUNÇÃO
-        do{
-        	printf("\nDigite quantidade de faltas do %d aluno: ", i+1);
-        	scanf("%d", &faltas);
-        	
-        	if(faltas <= 45){
-        	alunos[i].faltas = faltas;
-			}else{
-				printf("Por favor inserir a quantidade de faltas menor ou igual a 45");
-			}
-        
-		}while(faltas > 45);
-		}else{
-			printf("Essa matricula ja existe, por favor insira novamente");
-			i--;
-		}
-        
-    }
-}
-
-void listarAlunos(Aluno *turma){	
-	printf("Lista de alunos cadastrados:\n");
-	
-    for (int i = 0; i < 3; i++) {
-        printf("Matricula: %d\n", turma[i].matricula);
-        printf("Nota 1: %.1f\n", turma[i].nota1);
-        printf("Nota 2: %.1f\n", turma[i].nota2);
-        printf("Nota 3: %.1f\n", turma[i].nota3);
-        printf("Faltas: %d\n", turma[i].faltas);
-    }
-}
-    
- 
- int verificaValorVazio(Aluno *turma){
- 	for(int i = 0; i < 3; i++){
- 		if(turma[i].matricula == 0){
- 			return 0;
-		 }
-	 }
-	 return -1;
- }   
-
-
-
-void optionMenu(int op, Aluno *turma, int *ptrPosicaoAtual){
-	
+	int op;
 	do{
 		printf("Cadastro dos Alunos:\n");
         printf("Digite o numero de uma das opcoes: \n");
@@ -144,48 +37,98 @@ void optionMenu(int op, Aluno *turma, int *ptrPosicaoAtual){
         printf("0- Sair \n");
 		printf("\nEscolha uma opcao: ");
 		scanf("%d", &op);
-		
-		if(op == 1){
-			cadastrarAlunos(turma);
-		}	
-	    else if(op == 2){
-			printf("\nAlterar aluno");
-		}
-		else if(op == 3){
-			listarAlunos(turma);
-		}
-		else if(op == 4){
-			printf("\nAlterar aluno");
-		}
-		else if(op == 5){
-			printf("\nAlterar aluno");
-		}
-		else if(op == 6){
-			printf("\nAlterar aluno");
-		}
-		else if(op == 0){
-			printf("\nVoce saiu do programa");
-		}
-		else{
-			printf("\nOpcao invalida, digite outra opcao:\n ");
+		switch(op){
+			case 1: 
+				cadastrar(alunos);
+			break;
+			case 2:
+				alterarDados(alunos);
+			break;
+			case 3: listarAlunos(alunos);
+			break;
 		}
 	}while(op != 0);	
 }
 
-
-
-int main(){
-	int op = -1, *ptrPosicaoAtual, quantidadeAulas = 45;
-	Aluno turma[3];
-	int posicaoAtual = 0;
-	*ptrPosicaoAtual = &posicaoAtual;
+void cadastrar(Aluno *alunos){
+	int matricula;
+	float notas[3];
+	int faltas;
+	int op;
+	do{
+		printf("Qual a matricula: ");
+		scanf("%d", &matricula);
+		printf("Qual a primeira nota: ");
+		scanf("%f", &notas[0]);
+		printf("Qual a segunda nota: ");
+		scanf("%f", &notas[1]);
+		printf("Qual a terceira nota: ");
+		scanf("%f", &notas[2]);
+		printf("Qual a quantidade de faltas do aluno: ");
+		scanf("%d", &faltas);
 	
-	/*for (int i = 0; i < 3; i++) {
-        turma[i].matricula, 0;
-        turma[i].nota1, 0,0;
-    }*/
-	
-	optionMenu(op, turma, &posicaoAtual);
+		if (num_alunos < 50) {
+		    alunos[num_alunos].matricula = matricula; 
+		    alunos[num_alunos].notas[0] = notas[0];
+		    alunos[num_alunos].notas[1] = notas[1]; 
+		    alunos[num_alunos].notas[2] = notas[2]; 
+		    alunos[num_alunos].faltas = faltas;
+		    num_alunos++;
+		}
+		
+		printf("1- Continuar cadastro\n");
+		printf("0- Sair \n");
+		scanf("%d", &op);
+	}while(op!=0);
 }
+void alterarDados(Aluno *alunos){
+	int op;
+	int matricula;
+	printf("Digite uma matricula para alterar \n");
+	scanf("%d", &matricula);
+		
+		while (1) { 
+        for (int i = 0; i < num_alunos; i++) {
+            if (alunos[i].matricula == matricula) {
+                printf("Alterar primeira nota: \n");
+                scanf("%f", &alunos[i].notas[0]); 
+                printf("Alterar segunda nota: ");
+                scanf("%f", &alunos[i].notas[1]);   
+                printf("Alterar terceira nota:: ");
+                scanf("%f", &alunos[i].notas[2]);
+                printf("Alterar quantidade de faltas do aluno: ");
+                scanf("%d", &alunos[i].faltas);
+                return; 
+            }
+        }
+        
+        printf("Matricula invalida. Digite novamente: \n");
+        scanf("%d", &matricula);
+    }
+}
+			
 
-
+void listarAlunos(Aluno *alunos){
+	int op;
+	do{
+	printf("Alunos Cadastrados \n");
+	for(int i=0; i<num_alunos; i++){
+		printf("\nMatricula: %d ", alunos[i].matricula);
+		printf("Nota 1 : %.1f ", alunos[i].notas[0]);
+		printf("Nota 2 : %.1f ", alunos[i].notas[1]);
+		printf("Nota 3 : %.1f ", alunos[i].notas[2]);
+		printf("Faltas : %d ", alunos[i].faltas);	
+		}
+		printf("\nDigite 0 para sair \n");
+		scanf("%d", &op);
+	}while(op!=0);
+}
+void aprovados(){
+	
+}
+void reprovadosMedia(){
+	
+}
+void reprovadosFalta(){
+	
+}
