@@ -8,6 +8,7 @@ typedef struct{
 } Aluno;
 
 int num_alunos = 0;
+int quantidadeAulas = 45;
 
 void menu(Aluno *alunos);
 void cadastrar(Aluno *alunos);
@@ -42,13 +43,19 @@ void menu(Aluno *alunos){
 		switch(op){
 			case 1: 
 				cadastrar(alunos);
-			break;
+				break;
 			case 2:
 				alterarDados(alunos);
-			break;
+				break;
 			case 3: listarAlunos(alunos);
-			break;
+				break;
 			case 4: aprovados(alunos);
+				break;
+			case 5: 
+				break;
+			case 6:
+				break;
+			default: printf("\nOPCAO INVALIDA\n");
 		}
 	}while(op != 0);	
 }
@@ -61,28 +68,35 @@ void cadastrar(Aluno *alunos){
 	do{
 		printf("\nQual a matricula: ");
 		scanf("%d", &matricula);
-		if(verificaMatricula(alunos, matricula) == 0){
-		printf("Qual a primeira nota: ");
-		scanf("%f", &notas[0]);
-		printf("Qual a segunda nota: ");
-		scanf("%f", &notas[1]);
-		printf("Qual a terceira nota: ");
-		scanf("%f", &notas[2]);
-		printf("Qual a quantidade de faltas do aluno: ");
-		scanf("%d", &faltas);
-	
-		if (num_alunos < 50) {
-		    alunos[num_alunos].matricula = matricula; 
-		    alunos[num_alunos].notas[0] = notas[0];
-		    alunos[num_alunos].notas[1] = notas[1]; 
-		    alunos[num_alunos].notas[2] = notas[2]; 
-		    alunos[num_alunos].faltas = faltas;
-		    num_alunos++;
-		}
 		
-		printf("1- Continuar cadastro\n");
-		printf("0- Sair \n");
-		scanf("%d", &op);
+		if(verificaMatricula(alunos, matricula) == 0){
+			printf("Qual a primeira nota: ");
+			scanf("%f", &notas[0]);
+			printf("Qual a segunda nota: ");
+			scanf("%f", &notas[1]);
+			printf("Qual a terceira nota: ");
+			scanf("%f", &notas[2]);
+			
+			do{
+				printf("Qual a quantidade de faltas do aluno: ");
+				scanf("%d", &faltas);
+	
+				if (num_alunos < 50 && faltas <= quantidadeAulas) {
+		    		alunos[num_alunos].matricula = matricula; 
+		    		alunos[num_alunos].notas[0] = notas[0];
+		    		alunos[num_alunos].notas[1] = notas[1]; 
+		    		alunos[num_alunos].notas[2] = notas[2]; 
+		    		alunos[num_alunos].faltas = faltas;
+		    		num_alunos++;
+				}else{
+					printf("\nQuantidade de faltas invalida. Por favor inserir uma quantidade menor ou igual a 45.\n");
+				}
+			}while(faltas > quantidadeAulas);
+		
+			printf("1- Continuar cadastro\n");
+			printf("0- Sair \n");
+			scanf("%d", &op);
+			
 		}else{
 			printf("Essa matricula ja existe. Insira outra.");
 		}
