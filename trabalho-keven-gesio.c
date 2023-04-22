@@ -16,6 +16,7 @@ void listarAlunos(Aluno *alunos);
 void aprovados(Aluno *alunos);
 void reprovadosMedia();
 void reprovadosFalta();
+int verificaMatricula(Aluno *alunos, int matricula);
 float calcularMedia(Aluno aluno);
 
 int main(){
@@ -58,8 +59,9 @@ void cadastrar(Aluno *alunos){
 	int faltas;
 	int op;
 	do{
-		printf("Qual a matricula: ");
+		printf("\nQual a matricula: ");
 		scanf("%d", &matricula);
+		if(verificaMatricula(alunos, matricula) == 0){
 		printf("Qual a primeira nota: ");
 		scanf("%f", &notas[0]);
 		printf("Qual a segunda nota: ");
@@ -81,6 +83,9 @@ void cadastrar(Aluno *alunos){
 		printf("1- Continuar cadastro\n");
 		printf("0- Sair \n");
 		scanf("%d", &op);
+		}else{
+			printf("Essa matricula ja existe. Insira outra.");
+		}
 	}while(op!=0);
 }
 void alterarDados(Aluno *alunos){
@@ -128,7 +133,7 @@ void listarAlunos(Aluno *alunos){
 void aprovados(Aluno *alunos){
 	for(int i = 0; i < num_alunos; i++){
 		if(calcularMedia(alunos[i]) > 6){
-			printf("ALUNO APROVADO");
+			printf("\nALUNO APROVADO");
 			printf("\nMatricula: %d ", alunos[i].matricula);
 			printf("Nota 1 : %.1f ", alunos[i].notas[0]);
 			printf("Nota 2 : %.1f ", alunos[i].notas[1]);
@@ -143,6 +148,15 @@ void reprovadosMedia(){
 }
 void reprovadosFalta(){
 	
+}
+
+int verificaMatricula(Aluno *alunos, int matricula){
+	for(int i = 0; i < 3; i++){
+		if(alunos[i].matricula == matricula){
+			return 1;
+		}
+	}
+	return 0;
 }
 
 float calcularMedia(Aluno aluno){
