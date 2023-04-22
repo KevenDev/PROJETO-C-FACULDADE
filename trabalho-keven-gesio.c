@@ -71,12 +71,23 @@ void cadastrar(Aluno *alunos){
 		scanf("%d", &matricula);
 		
 		if(verificaMatricula(alunos, matricula) == 0){
-			printf("Qual a primeira nota: ");
-			scanf("%f", &notas[0]);
-			printf("Qual a segunda nota: ");
-			scanf("%f", &notas[1]);
-			printf("Qual a terceira nota: ");
-			scanf("%f", &notas[2]);
+			do{
+				printf("Qual a primeira nota: ");
+				scanf("%f", &notas[0]);
+				if(notas[0] > 10) printf("Nota invalida\n");
+			}while(notas[0] > 10);
+			do{
+				printf("Qual a segunda nota: ");
+				scanf("%f", &notas[1]);
+				if(notas[1] > 10) printf("Nota invalida\n");
+			}while(notas[1] > 10);
+			do{
+				printf("Qual a terceira nota: ");
+				scanf("%f", &notas[2]);
+				if(notas[2] > 10) printf("Nota invalida\n");
+			}while(notas[2] > 10);
+
+		
 			
 			do{
 				printf("Qual a quantidade de faltas do aluno: ");
@@ -93,7 +104,9 @@ void cadastrar(Aluno *alunos){
 					printf("\nQuantidade de faltas invalida. Por favor inserir uma quantidade menor ou igual a 45.\n");
 				}
 			}while(faltas > quantidadeAulas);
-		
+			printf("====================\n");
+			printf("Aluno Cadastrado com sucesso\n");
+			printf("====================\n");
 			printf("1- Continuar cadastro\n");
 			printf("0- Sair \n");
 			scanf("%d", &op);
@@ -106,10 +119,15 @@ void cadastrar(Aluno *alunos){
 void alterarDados(Aluno *alunos){
 	int op;
 	int matricula;
-	printf("Digite uma matricula para alterar \n");
-	scanf("%d", &matricula);
+	if(num_alunos == 0){
+		printf("====================\n");
+		printf("Nao existe alunos cadastrados\n");
+		printf("====================\n");
+	}else{
+		printf("Digite uma matricula para alterar \n");
+		scanf("%d", &matricula);
 		
-		while (1) { 
+		while (1) {
         for (int i = 0; i < num_alunos; i++) {
             if (alunos[i].matricula == matricula) {
                 printf("Alterar primeira nota: \n");
@@ -126,30 +144,44 @@ void alterarDados(Aluno *alunos){
         
         printf("Matricula invalida. Digite novamente: \n");
         scanf("%d", &matricula);
-    }
+    }	
+  } 
+	
 }
 			
 
 void listarAlunos(Aluno *alunos){
 	int op;
-	do{
+	if(num_alunos == 0){
+		printf("======================\n");
+		printf("Nao existe alunos cadastrados\n");
+		printf("======================\n");
+	}else{
+		do{
 	printf("Alunos Cadastrados \n");
 	for(int i=0; i<num_alunos; i++){
 		printf("\nMatricula: %d ", alunos[i].matricula);
 		printf("Nota 1 : %.1f ", alunos[i].notas[0]);
 		printf("Nota 2 : %.1f ", alunos[i].notas[1]);
 		printf("Nota 3 : %.1f ", alunos[i].notas[2]);
-		printf("Faltas : %d ", alunos[i].faltas);	
+		printf("Faltas : %d ", alunos[i].faltas);
+		printf("======================\n");	
 		}
 		printf("\nDigite 0 para sair \n");
 		scanf("%d", &op);
 	}while(op!=0);
+	}
 }
 void aprovados(Aluno *alunos){
 	int contador = 0;
-	for(int i = 0; i < num_alunos; i++){
+	if(num_alunos == 0){
+		printf("====================\n");
+		printf("Nao existe alunos cadastrados\n");
+		printf("====================\n");
+	}else{
+			for(int i = 0; i < num_alunos; i++){
 		if(calcularMedia(alunos[i]) >= 6 && calcularFrequencia(alunos[i]) >= 75){
-			printf("\nALUNO APROVADO");
+			printf("\nALUNOS APROVADO");
 			printf("\nMatricula: %d ", alunos[i].matricula);
 			printf("Nota 1 : %.1f ", alunos[i].notas[0]);
 			printf("Nota 2 : %.1f ", alunos[i].notas[1]);
@@ -163,9 +195,15 @@ void aprovados(Aluno *alunos){
 	if(contador = 0){
 		printf("NENHUM ALUNO APROVADO");
 	}
+  }
 }
 void reprovadosMedia(Aluno *alunos){
-	printf("\nALUNOS REPROVADOS POR MEDIA:");
+	if(num_alunos == 0){
+		printf("======================\n");
+		printf("Nao existe alunos cadastrados\n");
+		printf("======================\n");
+	}else{
+		printf("\nALUNOS REPROVADOS POR MEDIA:");
 	for(int i = 0; i < num_alunos; i++){
 		if(calcularMedia(alunos[i]) < 6){
 			printf("\nMatricula: %d ", alunos[i].matricula);
@@ -176,10 +214,17 @@ void reprovadosMedia(Aluno *alunos){
 			printf("\n====================");
 		}
 	}
+  }
 }
+
 void reprovadosFalta(Aluno *alunos){
-	printf("\nALUNOS REPROVADOS POR FALTA:");
-	for(int i = 0; i < num_alunos; i++){
+	if(num_alunos == 0){
+		printf("====================\n");
+		printf("Nao existe alunos cadastrados\n");
+		printf("====================\n");
+	}else{
+		printf("\nALUNOS REPROVADOS POR FALTA:");
+		for(int i = 0; i < num_alunos; i++){
 		if(calcularFrequencia(alunos[i]) < 75){
 			printf("\nMatricula: %d ", alunos[i].matricula);
 			printf("Nota 1 : %.1f ", alunos[i].notas[0]);
@@ -189,6 +234,7 @@ void reprovadosFalta(Aluno *alunos){
 			printf("\n====================");
 		}
 	}
+  }
 }
 
 int verificaMatricula(Aluno *alunos, int matricula){
