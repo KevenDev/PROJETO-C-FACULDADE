@@ -15,10 +15,11 @@ void cadastrar(Aluno *alunos);
 void alterarDados(Aluno *alunos);
 void listarAlunos(Aluno *alunos);
 void aprovados(Aluno *alunos);
-void reprovadosMedia();
-void reprovadosFalta();
+void reprovadosMedia(Aluno *alunos);
+void reprovadosFalta(Aluno *alunos);
 int verificaMatricula(Aluno *alunos, int matricula);
 float calcularMedia(Aluno aluno);
+float calcularFrequencia(Aluno aluno);
 
 int main(){
 	Aluno alunos[50];
@@ -51,9 +52,9 @@ void menu(Aluno *alunos){
 				break;
 			case 4: aprovados(alunos);
 				break;
-			case 5: 
+			case 5: reprovadosMedia(alunos);
 				break;
-			case 6:
+			case 6: reprovadosFalta(alunos);
 				break;
 			default: printf("\nOPCAO INVALIDA\n");
 		}
@@ -145,9 +146,28 @@ void listarAlunos(Aluno *alunos){
 	}while(op!=0);
 }
 void aprovados(Aluno *alunos){
+	int contador = 0;
 	for(int i = 0; i < num_alunos; i++){
-		if(calcularMedia(alunos[i]) > 6){
+		if(calcularMedia(alunos[i]) >= 6 && calcularFrequencia(alunos[i]) >= 75){
 			printf("\nALUNO APROVADO");
+			printf("\nMatricula: %d ", alunos[i].matricula);
+			printf("Nota 1 : %.1f ", alunos[i].notas[0]);
+			printf("Nota 2 : %.1f ", alunos[i].notas[1]);
+			printf("Nota 3 : %.1f ", alunos[i].notas[2]);
+			printf("Faltas : %d ", alunos[i].faltas);
+			printf("\n====================");
+			contador++;
+		}
+	}
+	
+	if(contador = 0){
+		printf("NENHUM ALUNO APROVADO");
+	}
+}
+void reprovadosMedia(Aluno *alunos){
+	printf("\nALUNOS REPROVADOS POR MEDIA:");
+	for(int i = 0; i < num_alunos; i++){
+		if(calcularMedia(alunos[i]) < 6){
 			printf("\nMatricula: %d ", alunos[i].matricula);
 			printf("Nota 1 : %.1f ", alunos[i].notas[0]);
 			printf("Nota 2 : %.1f ", alunos[i].notas[1]);
@@ -157,15 +177,22 @@ void aprovados(Aluno *alunos){
 		}
 	}
 }
-void reprovadosMedia(){
-	
-}
-void reprovadosFalta(){
-	
+void reprovadosFalta(Aluno *alunos){
+	printf("\nALUNOS REPROVADOS POR FALTA:");
+	for(int i = 0; i < num_alunos; i++){
+		if(calcularFrequencia(alunos[i]) < 75){
+			printf("\nMatricula: %d ", alunos[i].matricula);
+			printf("Nota 1 : %.1f ", alunos[i].notas[0]);
+			printf("Nota 2 : %.1f ", alunos[i].notas[1]);
+			printf("Nota 3 : %.1f ", alunos[i].notas[2]);
+			printf("Faltas : %d ", alunos[i].faltas);
+			printf("\n====================");
+		}
+	}
 }
 
 int verificaMatricula(Aluno *alunos, int matricula){
-	for(int i = 0; i < 3; i++){
+	for(int i = 0; i < num_alunos; i++){
 		if(alunos[i].matricula == matricula){
 			return 1;
 		}
@@ -179,4 +206,11 @@ float calcularMedia(Aluno aluno){
 	float media = soma / 3;
 	
 	return media;
+}
+
+float calcularFrequencia(Aluno aluno){
+	float aulasFrequentadas = quantidadeAulas - aluno.faltas;
+	float frequencia = (aulasFrequentadas / quantidadeAulas) * 100;
+	
+	return frequencia;
 }
