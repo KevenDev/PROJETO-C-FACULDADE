@@ -13,9 +13,10 @@ void menu(Aluno *alunos);
 void cadastrar(Aluno *alunos);
 void alterarDados(Aluno *alunos);
 void listarAlunos(Aluno *alunos);
-void aprovados();
+void aprovados(Aluno *alunos);
 void reprovadosMedia();
 void reprovadosFalta();
+float calcularMedia(Aluno aluno);
 
 int main(){
 	Aluno alunos[50];
@@ -26,7 +27,7 @@ void menu(Aluno *alunos){
 	
 	int op;
 	do{
-		printf("Cadastro dos Alunos:\n");
+		printf("\nCadastro dos Alunos:\n");
         printf("Digite o numero de uma das opcoes: \n");
         printf("1- Cadastrar aluno \n");
         printf("2- Alterar dados do alunos \n");
@@ -46,6 +47,7 @@ void menu(Aluno *alunos){
 			break;
 			case 3: listarAlunos(alunos);
 			break;
+			case 4: aprovados(alunos);
 		}
 	}while(op != 0);	
 }
@@ -123,12 +125,30 @@ void listarAlunos(Aluno *alunos){
 		scanf("%d", &op);
 	}while(op!=0);
 }
-void aprovados(){
-	
+void aprovados(Aluno *alunos){
+	for(int i = 0; i < num_alunos; i++){
+		if(calcularMedia(alunos[i]) > 6){
+			printf("ALUNO APROVADO");
+			printf("\nMatricula: %d ", alunos[i].matricula);
+			printf("Nota 1 : %.1f ", alunos[i].notas[0]);
+			printf("Nota 2 : %.1f ", alunos[i].notas[1]);
+			printf("Nota 3 : %.1f ", alunos[i].notas[2]);
+			printf("Faltas : %d ", alunos[i].faltas);
+			printf("\n====================");
+		}
+	}
 }
 void reprovadosMedia(){
 	
 }
 void reprovadosFalta(){
 	
+}
+
+float calcularMedia(Aluno aluno){
+	float soma = aluno.notas[0] + aluno.notas[1] + aluno.notas[2];
+	
+	float media = soma / 3;
+	
+	return media;
 }
